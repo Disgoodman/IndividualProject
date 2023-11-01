@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit details</title>
+
+    <link rel="stylesheet" type="text/css" href="/css/flexed-row.css">
+    <link rel="stylesheet" type="text/css" href="/css/table-list.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+          crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"></script>
+
+    <style>
+        div.main-content {
+            margin: 5% 25%;
+        }
+
+        .invalid-feedback {
+            display: block;
+        }
+
+        legend h2 {
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+<div th:insert="fragments/headers :: header"></div>
+
+<div class="main-content">
+    <!--/*@thymesVar id="motorcycle" type="com.example.models.entity.Motorcycle"*/-->
+    <form method="post" th:object="${details}">
+        <fieldset>
+            <legend><h2 th:text="'Edit motorcycle #' + ${id}">EDIT motorcycle</h2></legend>
+        </fieldset>
+
+        <div class="d-grid gap-3">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="model" placeholder="Model" th:field="*{model}">
+                <label for="model" class="form-label">Model</label>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></div>
+            </div>
+
+            <div class="form-floating">
+                <input type="number" required class="form-control" id="price" placeholder="Price" th:field="*{price}">
+                <label for="price" class="form-label">Price in dollars</label>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+            </div>
+
+            <div class="input-group">
+                <a class="btn btn-outline-secondary" href="/engines/add">Add engine</a>
+                <div class="form-floating">
+                    <select class="form-select" id="engines" th:field="*{engine}">
+                        <!--/*@thymesVar id="engine" type="com.example.models.entity.Engine"*/-->
+                        <option th:each="engine : ${engines}"
+                                th:value="${engine.getId()}"
+                                th:text="${engine.getModel()}"></option>
+                    </select>
+                    <label for="engines">Motorcycle's engine Model</label>
+                </div>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('engine')}" th:errors="*{engine}"></div>
+            </div>
+
+            <div class="flexed-row">
+                <button class="btn btn-success" type="submit">Save changes</button>
+                <a class="btn btn-danger" href="/motorcycles/all">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
